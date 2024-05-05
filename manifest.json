@@ -8,13 +8,16 @@
   },
   "content_scripts":[
     {
-      "matches": ["https://*.youtube.com/*"],
-      "js": ["./popup.js"]
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["./content_script.js"]
     }
   ],
   "permissions": [
     "storage",
     "tabs"
   ],
-  "host_permissions": ["https://*.youtube.com/*"]
+  "host_permissions": ["*://www.youtube.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  }
 }
