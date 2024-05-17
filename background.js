@@ -39,7 +39,7 @@ const updateTab = () => {
   if (isHistoryTab) {
     setTimeout(() => {
       chrome.tabs.update({ url: REDIRECT_URL });
-    }, 200);
+    }, 100);
   }
 };
 
@@ -50,3 +50,25 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     tracker = false;
   }
 });
+
+chrome.runtime.onInstalled.addListener(async (details)=>{
+  if(details.reason === "install"){
+    const password = await fetchPassword();
+    if(!password){
+      chrome.tabs.create({ url: "getPassword.html" });
+    } else{
+      chrome.tabs.create({ url: "getPassword.html" });
+    }
+  }
+})
+
+
+const fetchPassword=()=>{
+  return new Promise((resolve)=>{
+    resolve(
+      chrome.storage.sync.get(["password"]).then((result)=>{
+        return result.password;
+      }) 
+    )
+  }) 
+}
