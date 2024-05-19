@@ -1,8 +1,8 @@
 {
-  "name": "History Locker",
+  "name": "Lock Your History",
   "manifest_version": 3,
   "version": "0.0.1",
-  "description": "Secure your browsing history with a password. History Locker locks your history tab to protect your privacy.",
+  "description": "Secure your browsing history with a password. Lock Your History locks your history tab to protect your privacy.",
   "permissions": ["tabs", "storage"],
   "background": {
     "service_worker": "background.js"
@@ -13,15 +13,13 @@
       "48": "assets/icon48.png",
       "128": "assets/icon128.png"
     }
-    },
-    "icons":{
-      "16": "assets/icon16.png",
-      "48": "assets/icon48.png",
-      "128": "assets/icon128.png"
-    },
-    "content_security_policy": {
-      "extension_pages": "script-src 'self'; object-src 'self'"
-    }
-  
-  
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }
