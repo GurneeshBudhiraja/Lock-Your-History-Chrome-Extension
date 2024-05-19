@@ -1,13 +1,27 @@
 {
-  "name": "History Protect",
+  "name": "SafeHistory",
   "manifest_version": 3,
   "version": "0.0.1",
-  "description": "Protect your browser history with a password",
+  "description": "Secure your browsing history with a password. SafeHistory locks your history tab to protect your privacy.",
   "permissions": ["tabs", "storage"],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html"
-  }
+    "default_icon": {
+      "16": "assets/icon48.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon48.png"
+    }
+    },
+    "icons":{
+      "16": "assets/icon48.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon48.png"
+    },
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'"
+    }
+  
+  
 }
