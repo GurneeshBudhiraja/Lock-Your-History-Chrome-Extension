@@ -51,8 +51,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 });
 
-chrome.runtime.onInstalled.addListener(async (details)=>{
-  if(details.reason === "update"){
-    chrome.tabs.create({url: "getPassword.html"});
+chrome.runtime.onInstalled.addListener(async (details) => {
+  if (details.reason === "install") {
+    chrome.tabs.create({ url: "getPassword.html" });
   }
-})
+});
