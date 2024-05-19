@@ -1,8 +1,8 @@
 {
-  "name": "SafeHistory",
+  "name": "History Locker",
   "manifest_version": 3,
   "version": "0.0.1",
-  "description": "Secure your browsing history with a password. SafeHistory locks your history tab to protect your privacy.",
+  "description": "Secure your browsing history with a password. History Locker locks your history tab to protect your privacy.",
   "permissions": ["tabs", "storage"],
   "background": {
     "service_worker": "background.js"

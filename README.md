@@ -1,1 +1,1 @@
-## SafeHistory- Protect Your Browsing History with a Password
+## History Locker- Protect Your Browsing History with a Password

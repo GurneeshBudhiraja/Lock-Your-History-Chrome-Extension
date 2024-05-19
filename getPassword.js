@@ -2,7 +2,7 @@ let password=null;
 let confirmPassword=null;
 let answerHint=null;
 let infoObject = {};
-alert("Welcome to SafeHistory! Please set your password and hint.");
+alert("Welcome to History Locker! Please set your password and hint.");
 while(true){
   password = prompt("Set your password:");
   if(!password){
