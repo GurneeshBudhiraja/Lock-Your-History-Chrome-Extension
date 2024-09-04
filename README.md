@@ -10,7 +10,7 @@
 - **Seamless Integration**: Works effortlessly with your existing browser setup.
 
 ## Installation
-1. **Download and Install**: Go to the [Chrome Web Store](https://chrome.google.com/webstore) and search for "Lock Your History". Click "Add to Chrome" to install the extension.
+1. **Download and Install**: Go to the [Lock Your History](https://chromewebstore.google.com/detail/lock-your-history/dmgjohdeohghdfnnampfhhkkdodkjbff) and click "Add to Chrome" to install the extension.
 2. **Set Your Password**: After installation, you will be prompted to set your password and a hint for future reference.
 3. **Ready to Use**: Your browsing history is now protected. Any attempt to access the history tab will require the correct password.
 
