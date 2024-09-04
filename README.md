@@ -1,7 +1,7 @@
 # Lock Your History - Chrome Extension
 
 ## Overview
-**Lock Your History** is a powerful Chrome extension designed to protect your browsing history with a password. Whether you share your device with others or just want to enhance your privacy, this extension ensures that your browsing history remains confidential and secure.
+Lock Your History is a Chrome extension, currently used by over 400 users, designed to protect your browsing history with a password. Whether you share your device or want enhanced privacy, this extension keeps your history confidential and secure.
 
 ## Features
 - **Password Protection**: Secure your history tab with a password.
