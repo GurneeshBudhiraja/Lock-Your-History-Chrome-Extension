@@ -1,8 +1,10 @@
 const HISTORY_URL_SUFFIX = "://history/";
-const REDIRECT_URL = "password.html";
+const REDIRECT_URL = "password/password.html";
+// TODO: will change this url before pushing to the github repository
+const FEEDBACK_FORM_URL = "FORM_URL"; 
 
-let isHistoryTab = false;
-let tracker = false;
+let tracker = true;
+
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
   checkHistoryTab(activeInfo.tabId);
@@ -16,43 +18,30 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 const checkHistoryTab = (tabId) => {
   chrome.tabs.get(tabId, (tab) => {
-    if (chrome.runtime.lastError) {
-      console.error(chrome.runtime.lastError);
+    if(tab.url==="chrome://history/" && tracker){
+      console.log(tab.url);
+      updateTab();
+    }
+    else{
       return;
     }
-
-    if (tab.url && tab.url.endsWith(HISTORY_URL_SUFFIX)) {
-      if (!tracker) {
-        tracker = true;
-        isHistoryTab = true;
-      } else {
-        tracker = false;
-      }
-    } else {
-      isHistoryTab = false;
-    }
-    updateTab();
   });
 };
 
 const updateTab = () => {
-  if (isHistoryTab) {
-    setTimeout(() => {
-      chrome.tabs.update({ url: REDIRECT_URL });
-    }, 100);
-  }
+  tracker = false;
+  setTimeout(() => {
+    chrome.tabs.update({ url: REDIRECT_URL });
+    }, 0);
+  
 };
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log(sender.tab);
-  console.log(request);
-  if (!request.tracker) {
-    tracker = false;
+// on installation
+chrome.runtime.onInstalled.addListener(async (details) => {
+  if (details.reason === "install") {
+    chrome.tabs.create({ url: "getPassword/getPassword.html" });
   }
 });
 
-chrome.runtime.onInstalled.addListener(async (details) => {
-  if (details.reason === "install") {
-    chrome.tabs.create({ url: "getPassword.html" });
-  }
-});
+// on deletion
+chrome.runtime.setUninstallURL(FEEDBACK_FORM_URL);
