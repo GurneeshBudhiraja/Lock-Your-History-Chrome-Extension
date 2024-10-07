@@ -24,11 +24,13 @@ let userCredentials = undefined;
 passwordForm.addEventListener("submit", (e)=>{
   e.preventDefault();
   if(!passwordField.value.trim()){
-    passwordField.value = "";
+    passwordField.value = ""; // removing the value from the password field
+    passwordField.focus(); // focusing the password field
+    // styles for the password field
+    passwordField.style.outline = "2px solid red";
+    passwordField.style.marginTop = "0.5rem"; //  reducing the top margin for the password field
     passwordErrorMessage.style.display = "block";
     passwordErrorMessage.innerText = "Password field cannot be empty";
-    passwordField.focus();
-    passwordField.style.outline = "2px solid red";
     // clearing the hint text
     passwordHint.innerText = "";
     return;
@@ -65,26 +67,23 @@ async function authenticateUser() {
   } else { // if the entered password and stored password do not match
     // clearing the password field
     passwordField.value = "";
-    // adding styles to the password error message
-    passwordErrorMessage.style.display = "block";
+    // style to the password field
     passwordField.style.outline = "2px solid red";
-    // error message to display
-    passwordErrorMessage.innerText = "Incorrect password, please try again";
+    passwordField.style.marginTop = "0.5rem";
     // focusing the password field
     passwordField.focus();
-    passwordHint.innerText = `Password hint: ${userCredentials?.answerHint}`; // showing the password hint
+    // adding styles to the password error message
+    passwordErrorMessage.style.display = "block";
+    // error message to display
+    passwordErrorMessage.innerText = "Incorrect password, please try again";
+    
+    passwordHint.innerText = `Hint: ${userCredentials?.answerHint}`; // showing the password hint
   }
 }
 
 
+// fetches password from the local storage and returns the promise
 function fetchPassword() {
-  // output format of the password
-  /*
-    {
-      "answerHint": "this",
-      "password": "this"
-    }
-  */
   return new Promise((resolve) => {
     chrome.storage.sync.get(["infoObject"], (result) => {
       resolve(result.infoObject);
