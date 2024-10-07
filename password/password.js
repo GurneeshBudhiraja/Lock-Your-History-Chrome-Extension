@@ -54,6 +54,8 @@ cancelButton.addEventListener("click",()=>{
 async function authenticateUser() {
 
   if (enteredPassword?.trim() === userCredentials.password) {
+    await sendMessage({message: "unlockHistory" });
+
     // if the user has entered the right password
     setTimeout(() => {
       chrome.tabs.update({ url: "chrome://history/" });
@@ -88,4 +90,9 @@ function fetchPassword() {
       resolve(result.infoObject);
     });
   });
+}
+
+// sends message to the background script
+async function sendMessage(message) {
+  return await chrome.runtime.sendMessage(message);
 }

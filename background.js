@@ -1,39 +1,43 @@
-const HISTORY_URL_SUFFIX = "://history/";
+// lock tab url
 const REDIRECT_URL = "password/password.html";
-// TODO: will change this url before pushing to the github repository
+// feedback form url
 const FEEDBACK_FORM_URL = "FORM_URL"; 
 
-let tracker = true;
+// check if the user is on history tab or not
+let isHistoryTab = false;
 
-
+// onActivated event listener for the chrome tabs
 chrome.tabs.onActivated.addListener((activeInfo) => {
-  checkHistoryTab(activeInfo.tabId);
+  setTimeout(() => {
+    checkHistoryTab(activeInfo?.tabId);
+  }, 20);
 });
 
+// onUpdated event listener for the chrome tabs
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.url && tab.active) {
+  setTimeout(() => {
     checkHistoryTab(tabId);
-  }
+  }, 20);
 });
 
+// check the history tab using the tabId
 const checkHistoryTab = (tabId) => {
   chrome.tabs.get(tabId, (tab) => {
-    if(tab.url==="chrome://history/" && tracker){
-      console.log(tab.url);
-      updateTab();
-    }
-    else{
+    if (tab?.url.includes("chrome://history") && !isHistoryTab) {
+      isHistoryTab = true;
+      updateTab(tabId);
+    } else if (tab?.url === "chrome://history/" && isHistoryTab) {
+      return;
+    } else {
+      isHistoryTab = false;
       return;
     }
   });
 };
 
-const updateTab = () => {
-  tracker = false;
-  setTimeout(() => {
-    chrome.tabs.update({ url: REDIRECT_URL });
-    }, 0);
-  
+// Retry logic for updating the tab in case of drag error
+const updateTab = (tabId) => {
+    chrome.tabs.update(tabId, { url: REDIRECT_URL });
 };
 
 // on installation
@@ -45,3 +49,14 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 
 // on deletion
 chrome.runtime.setUninstallURL(FEEDBACK_FORM_URL);
+
+// messaging channel
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  // message from the password.js to notify background.js to know the user has access to the history tab.
+  if (request.message === "unlockHistory") {
+    isHistoryTab = true;
+    return;
+  }
+});
+
+
