@@ -1,7 +1,7 @@
 // lock tab url
 const REDIRECT_URL = "password/password.html";
 // feedback form url
-const FEEDBACK_FORM_URL = "https://forms.gle/JvJqBj5kYhQE2UJV8"; 
+const FEEDBACK_FORM_URL = "https://forms.gle/u1UFzwdrvom43rgx8"; 
 
 // check if the user is on history tab or not
 let isHistoryTab = false;

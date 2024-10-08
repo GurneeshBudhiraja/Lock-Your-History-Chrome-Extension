@@ -16,7 +16,7 @@ let userCredentials = undefined;
     // if there is no password stored in the local storage return to the password setup page
     setTimeout(() => {
       chrome.tabs.update({ url: "../getPassword/getPassword.html" });
-    }, 0);
+    }, 20);
   }
 })();
 
