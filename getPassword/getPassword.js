@@ -6,23 +6,26 @@ let infoObject = {};
 alert("Welcome to Lock Your History! Please set your password and hint.");
 
 while (true) {
-  // password
+  // password prompt
   password = prompt("Set your password:")?.trim();
   if (!password) {
+    // checks for the empty password
     alert("Password cannot be empty");
     continue;
   }
-  // confirm password
+  // confirm password prompt
   confirmPassword = prompt("Confirm your password:")?.trim();
   if (!confirmPassword) {
+    // checks for the empty confirm password
     alert("Confirm Password cannot be empty");
     continue;
   } else if (password !== confirmPassword) {
-    // if the password and confirm password are not the same
+    // checks the password dissimilarity
     alert("Passwords do not match");
   } else if (password === confirmPassword) {
+    // checks the password similarity
     while (true) {
-      // setting the hint for the password
+      // hint prompt
       answerHint = prompt("Set a hint for your password:")?.trim();
       if (!answerHint) {
         // checking for the empty hint
@@ -31,18 +34,21 @@ while (true) {
       }
       break;
     }
-    infoObject = { password: password, answerHint };
     break;
   }
 }
 
 if (password && confirmPassword && answerHint) {
-  // saving the password, confirm password and hint in the local storage
+  // combining the password and hint into an object
+  infoObject = { password: password, answerHint };
+  
+  // saving the password and hint in the local storage
   chrome.storage.sync
     .set({ infoObject: infoObject })
     .then(() => {
-      // success message
+      // alert success message
       alert("Password and hint have been saved successfully.");
+      // removing the getPassword.html page from the browser
       chrome.tabs.getCurrent(function (tab) {
         chrome.tabs.remove(tab.id);
       });

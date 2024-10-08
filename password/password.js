@@ -5,38 +5,43 @@ const passwordErrorMessage = document.querySelector("#error-message");
 const passwordForm = document.querySelector("#passwordForm");
 const passwordHint = document.querySelector("#password-hint");
 
-// constants
-let enteredPassword = undefined;
-let userCredentials = undefined;
+let enteredPassword = undefined; // password field value
+let userCredentials = undefined; // user credentials stored
 
 
-(async()=>{
-  userCredentials = await fetchPassword();
-  if(!userCredentials || !userCredentials.password || !userCredentials.answerHint){
-    // if there is no password stored in the local storage return to the password setup page
-    setTimeout(() => {
-      chrome.tabs.update({ url: "../getPassword/getPassword.html" });
-    }, 20);
-  }
-})();
+// fetching the password
+fetchPassword().then(userCredentials = (passwordObject)=>{
+  userCredentials = passwordObject;
+  return;
+});
 
-// checking for the form submit button
+// form submission
 passwordForm.addEventListener("submit", (e)=>{
+  
   e.preventDefault();
+  
   if(!passwordField.value.trim()){
-    passwordField.value = ""; // removing the value from the password field
+    // checks if the password field is empty or not 
+    passwordField.value = ""; // reset the password field
     passwordField.focus(); // focusing the password field
-    // styles for the password field
+    
+    // style for the password field
     passwordField.style.outline = "2px solid red";
-    passwordField.style.marginTop = "0.5rem"; //  reducing the top margin for the password field
+    passwordField.style.marginTop = "0.5rem";
     passwordErrorMessage.style.display = "block";
     passwordErrorMessage.innerText = "Password field cannot be empty";
-    // clearing the hint text
+    
+    // clearing the hint text if present
     passwordHint.innerText = "";
     return;
+
   } else{
+    // remove the error message from the window
     passwordErrorMessage.style.display = "none";
+    
+    // removing the style attribute from the password field
     passwordField.removeAttribute("style");
+
     enteredPassword = passwordField.value;
     authenticateUser();
     return;
@@ -44,6 +49,40 @@ passwordForm.addEventListener("submit", (e)=>{
 })
 
 
+
+
+
+async function authenticateUser() {
+  // checks the similarity of stored password with the entered password
+  if (enteredPassword?.trim() === userCredentials.password) {
+    
+    // sends a message to allow the history tab without the lock
+    await sendMessage({message: "unlockHistory" });
+
+    // update the current lock tab with the history tab
+    chrome.tabs.update({ url: "chrome://history/" });
+    return;
+  
+  } else { 
+    // for invalid user credentials
+    
+    passwordField.value = ""; // clearing the value of the password field
+    passwordField.focus(); // focusing the password field
+    
+    // styles the password field with a red outline and adjusts the top margin.
+    passwordField.style.outline = "2px solid red";
+    passwordField.style.marginTop = "0.5rem";
+
+    // updating error message
+    passwordErrorMessage.innerText = "Incorrect password, please try again";
+    // changing the visibility of the error message
+    passwordErrorMessage.style.display = "block";
+    
+    passwordHint.innerText = `Hint: ${userCredentials?.answerHint}`; // showing the password hint
+  }
+}
+
+// cancel button
 cancelButton.addEventListener("click",()=>{
   // getting the current tab id
   chrome.tabs.getCurrent(function (tab) {
@@ -52,37 +91,7 @@ cancelButton.addEventListener("click",()=>{
   });
 })
 
-
-async function authenticateUser() {
-
-  if (enteredPassword?.trim() === userCredentials.password) {
-    await sendMessage({message: "unlockHistory" });
-
-    // if the user has entered the right password
-    setTimeout(() => {
-      chrome.tabs.update({ url: "chrome://history/" });
-    }, 0);
-    return;
-  
-  } else { // if the entered password and stored password do not match
-    // clearing the password field
-    passwordField.value = "";
-    // style to the password field
-    passwordField.style.outline = "2px solid red";
-    passwordField.style.marginTop = "0.5rem";
-    // focusing the password field
-    passwordField.focus();
-    // adding styles to the password error message
-    passwordErrorMessage.style.display = "block";
-    // error message to display
-    passwordErrorMessage.innerText = "Incorrect password, please try again";
-    
-    passwordHint.innerText = `Hint: ${userCredentials?.answerHint}`; // showing the password hint
-  }
-}
-
-
-// fetches password from the local storage and returns the promise
+// returns promise after fetching the password 
 function fetchPassword() {
   return new Promise((resolve) => {
     chrome.storage.sync.get(["infoObject"], (result) => {
