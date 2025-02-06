@@ -1,7 +1,7 @@
 {
   "name": "Lock Your History",
   "manifest_version": 3,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Secure your browsing history with a password. Lock Your History locks your history tab to protect your privacy.",
   "permissions": ["tabs", "storage"],
   "background": {
